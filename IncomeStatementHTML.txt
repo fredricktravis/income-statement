@@ -1,0 +1,345 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Income Statement</title>
+    <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Open Sans', sans-serif;
+        }
+
+        body {
+            background-color: #f4f4f4;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .logo-upload {
+            border: 2px dashed #e60000;
+            padding: 10px;
+            text-align: center;
+            width: 100px;
+            height: 100px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 14px;
+            color: #e60000;
+        }
+
+        .logo-upload:hover {
+            background-color: #e6000020;
+        }
+
+        .company-name {
+            font-size: 18px;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            width: 200px;
+        }
+
+        .title {
+            text-align: right;
+        }
+
+        .title h1 {
+            font-size: 24px;
+            font-weight: 700;
+            color: #333;
+        }
+
+        .date-range {
+            display: flex;
+            gap: 10px;
+            margin-top: 10px;
+            justify-content: flex-end;
+        }
+
+        .date-range input {
+            padding: 8px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            font-size: 14px;
+        }
+
+        .section-header {
+            background-color: #e60000;
+            color: #fff;
+            padding: 10px;
+            font-size: 18px;
+            font-weight: 700;
+            margin: 20px 0 10px;
+            border-radius: 4px;
+        }
+
+        .row {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 10px;
+        }
+
+        .row input[type="text"],
+        .row input[type="number"] {
+            padding: 8px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            font-size: 14px;
+            flex: 1;
+        }
+
+        .row input[type="number"] {
+            width: 120px;
+        }
+
+        .delete-btn {
+            background: none;
+            border: none;
+            cursor: pointer;
+            color: #333;
+            font-size: 18px;
+            padding: 5px;
+        }
+
+        .delete-btn:hover {
+            color: #e60000;
+        }
+
+        .add-btn {
+            background-color: #e60000;
+            color: #fff;
+            border: none;
+            padding: 8px 16px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 14px;
+            margin-top: 10px;
+            display: inline-block;
+        }
+
+        .add-btn:hover {
+            background-color: #cc0000;
+        }
+
+        .total {
+            font-weight: 700;
+            font-size: 16px;
+            margin: 10px 0;
+            text-align: right;
+        }
+
+        .preview-btn {
+            background-color: #e60000;
+            color: #fff;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 16px;
+            float: right;
+            margin-top: 20px;
+        }
+
+        .preview-btn:hover {
+            background-color: #cc0000;
+        }
+
+        @media (max-width: 768px) {
+            .header {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+
+            .title {
+                text-align: left;
+                margin-top: 20px;
+            }
+
+            .date-range {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+
+            .row {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+
+            .row input[type="text"],
+            .row input[type="number"] {
+                width: 100%;
+            }
+
+            .delete-btn {
+                align-self: flex-end;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <div>
+                <div class="logo-upload" onclick="document.getElementById('logo-input').click()">Upload Logo</div>
+                <input type="file" id="logo-input" accept="image/*" style="display: none;">
+                <input type="text" class="company-name" placeholder="Company Name">
+            </div>
+            <div class="title">
+                <h1>Income Statement</h1>
+                <div class="date-range">
+                    <span>For the year</span>
+                    <input type="date" placeholder="Jan 01, 2024" value="2024-01-01">
+                    <span>-</span>
+                    <input type="date" placeholder="Dec 31, 2024" value="2024-12-31">
+                </div>
+            </div>
+        </div>
+
+        <!-- Revenue Section -->
+        <div class="section-header">Revenue</div>
+        <div id="revenue-items">
+            <div class="row">
+                <input type="text" placeholder="Sales">
+                <input type="number" placeholder="0.00" min="0" step="0.01" class="revenue-amount">
+                <button class="delete-btn">✖</button>
+            </div>
+        </div>
+        <button class="add-btn" onclick="addRow('revenue')">+ Add Item</button>
+        <div class="total" id="total-revenue">Total Revenue: $0.00</div>
+
+        <!-- Cost of Goods Sold Section -->
+        <div class="section-header">Cost of Goods Sold</div>
+        <div id="cogs-items">
+            <div class="row">
+                <input type="text" placeholder="Purchases">
+                <input type="number" placeholder="0.00" min="0" step="0.01" class="cogs-amount">
+                <button class="delete-btn">✖</button>
+            </div>
+            <div class="row">
+                <input type="text" placeholder="Direct Labour">
+                <input type="number" placeholder="0.00" min="0" step="0.01" class="cogs-amount">
+                <button class="delete-btn">✖</button>
+            </div>
+        </div>
+        <button class="add-btn" onclick="addRow('cogs')">+ Add Item</button>
+        <div class="total" id="total-cogs">Total Cost of Goods Sold: $0.00</div>
+        <div class="total" id="gross-income">Gross Income: $0.00</div>
+
+        <!-- Expenses Section -->
+        <div class="section-header">Expenses</div>
+        <div id="expense-items">
+            <div class="row">
+                <input type="text" placeholder="Selling Expenses">
+                <input type="number" placeholder="0.00" min="0" step="0.01" class="expense-amount">
+                <button class="delete-btn">✖</button>
+            </div>
+            <div class="row">
+                <input type="text" placeholder="Admin Expenses">
+                <input type="number" placeholder="0.00" min="0" step="0.01" class="expense-amount">
+                <button class="delete-btn">✖</button>
+            </div>
+        </div>
+        <button class="add-btn" onclick="addRow('expense')">+ Add Item</button>
+        <div class="total" id="total-expense">Total Expenses: $0.00</div>
+        <div class="total" id="operating-income">Operating Income: $0.00</div>
+
+        <!-- Tax Section -->
+        <div class="section-header">Tax</div>
+        <div class="row">
+            <input type="text" placeholder="Income Tax">
+            <input type="number" placeholder="0.00" min="0" step="0.01" id="tax-amount">
+        </div>
+        <div class="total" id="net-income">Net Income: $0.00</div>
+
+        <button class="preview-btn" onclick="preview()">Preview</button>
+    </div>
+
+    <script>
+        function addRow(section) {
+            const container = document.getElementById(`${section}-items`);
+            const row = document.createElement('div');
+            row.className = 'row';
+            row.innerHTML = `
+                <input type="text" placeholder="${section === 'revenue' ? 'Sales' : section === 'cogs' ? 'Item' : 'Expense Item'}">
+                <input type="number" placeholder="0.00" min="0" step="0.01" class="${section}-amount">
+                <button class="delete-btn" onclick="deleteRow(this)">✖</button>
+            `;
+            container.appendChild(row);
+            updateTotals();
+        }
+
+        function deleteRow(btn) {
+            btn.parentElement.remove();
+            updateTotals();
+        }
+
+        function updateTotals() {
+            // Revenue
+            const revenueAmounts = document.querySelectorAll('.revenue-amount');
+            let totalRevenue = 0;
+            revenueAmounts.forEach(input => {
+                totalRevenue += parseFloat(input.value) || 0;
+            });
+            document.getElementById('total-revenue').textContent = `Total Revenue: $${totalRevenue.toFixed(2)}`;
+
+            // COGS
+            const cogsAmounts = document.querySelectorAll('.cogs-amount');
+            let totalCogs = 0;
+            cogsAmounts.forEach(input => {
+                totalCogs += parseFloat(input.value) || 0;
+            });
+            document.getElementById('total-cogs').textContent = `Total Cost of Goods Sold: $${totalCogs.toFixed(2)}`;
+
+            // Gross Income
+            const grossIncome = totalRevenue - totalCogs;
+            document.getElementById('gross-income').textContent = `Gross Income: $${grossIncome.toFixed(2)}`;
+
+            // Expenses
+            const expenseAmounts = document.querySelectorAll('.expense-amount');
+            let totalExpense = 0;
+            expenseAmounts.forEach(input => {
+                totalExpense += parseFloat(input.value) || 0;
+            });
+            document.getElementById('total-expense').textContent = `Total Expenses: $${totalExpense.toFixed(2)}`;
+
+            // Operating Income
+            const operatingIncome = grossIncome - totalExpense;
+            document.getElementById('operating-income').textContent = `Operating Income: $${operatingIncome.toFixed(2)}`;
+
+            // Net Income
+            const tax = parseFloat(document.getElementById('tax-amount').value) || 0;
+            const netIncome = operatingIncome - tax;
+            document.getElementById('net-income').textContent = `Net Income: $${netIncome.toFixed(2)}`;
+        }
+
+        function preview() {
+            alert('Preview functionality to be implemented. This will display a formatted income statement.');
+        }
+
+        // Add event listeners for real-time updates
+        document.addEventListener('input', updateTotals);
+    </script>
+</body>
+</html>
